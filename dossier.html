@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACT Soluciones Médicas · How the operation is run · MicroAire Colombia 2026</title>
+<meta name="description" content="The workings behind the ACT distribution proposal for MicroAire Colombia: customs records, unit economics, working capital and the financing mechanics.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   Dossier · ACT para MicroAire
+
+   Hermano del deck: misma paleta, mismas cifras, distinto trabajo. El deck
+   se ve en una sala en veinte minutos. Esto se lee despues, con calma y con
+   ganas de comprobar. Por eso aqui va la fuente de cada numero y el como se
+   calculo, que en una lamina no cabe.
+
+   Se imprime en A4 y sale un PDF decente: hay @media print al final y el
+   boton de descargar llama al dialogo de impresion del propio navegador.
+   Sin librerias, sin servidor, un solo archivo que se manda por correo.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{
+  --tinta:#101820; --papel:#FFFFFF; --gris:#5B6672; --linea:#E4E8EC;
+  --azul:#0072CE; --azul-d:#00538F; --azul-l:#EFF6FD;
+  --oro:#B0821A; --verde:#1B6B47; --rojo:#9C2A2A;
+  --sombra:0 1px 2px rgba(16,24,32,.04), 0 10px 30px rgba(16,24,32,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--tinta);background:#F7F9FB;
+  line-height:1.6;-webkit-font-smoothing:antialiased}
+.hoja{max-width:940px;margin:0 auto;background:var(--papel);box-shadow:var(--sombra)}
+
+/* ══ cabecera ══ */
+header{background:var(--tinta);color:#fff;padding:52px 60px 44px;position:relative}
+header::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--azul)}
+header .marca{font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:#8FC5F0;font-weight:600;margin-bottom:18px}
+header h1{font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.2;max-width:22ch}
+header .bajada{margin-top:14px;color:#C9D3DC;font-size:15px;max-width:60ch}
+header .meta{margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14);
+  font-size:13px;color:#8B96A2;display:flex;gap:28px;flex-wrap:wrap}
+
+main{padding:0 60px 60px}
+section{padding:38px 0;border-bottom:1px solid var(--linea)}
+section:last-child{border-bottom:0}
+h2{font-family:'Source Serif 4',Georgia,serif;font-size:25px;font-weight:600;
+  letter-spacing:-.01em;margin-bottom:6px}
+h2 .n{color:var(--azul);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;
+  display:block;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.sub{color:var(--gris);font-size:14.5px;margin-bottom:22px;max-width:70ch}
+p{margin-bottom:14px;font-size:15px;max-width:74ch}
+p:last-child{margin-bottom:0}
+strong{font-weight:600}
+.gris{color:var(--gris)}
+
+/* ══ tablas ══ */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+th{background:var(--azul-d);color:#fff;text-align:left;padding:10px 12px;font-weight:600;
+  font-size:12.5px;letter-spacing:.03em}
+td{padding:10px 12px;border-bottom:1px solid var(--linea);vertical-align:top}
+tbody tr:nth-child(even){background:#FAFCFE}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+td.destaca{font-weight:600;color:var(--azul-d)}
+caption{caption-side:bottom;text-align:left;font-size:12px;color:var(--gris);
+  padding-top:10px;font-style:italic}
+
+/* ══ cifras ══ */
+.cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea);margin:22px 0}
+.cifra{background:var(--azul-l);padding:18px 20px}
+.cifra .v{font-size:29px;font-weight:700;color:var(--azul-d);letter-spacing:-.02em;line-height:1.1}
+.cifra .v.verde{color:var(--verde)}
+.cifra .v.rojo{color:var(--rojo)}
+.cifra .e{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);
+  font-weight:600;margin-top:7px}
+.cifra .n{font-size:12px;color:var(--gris);margin-top:6px;line-height:1.4}
+
+/* ══ avisos ══ */
+.nota{background:var(--azul-l);border-left:3px solid var(--azul);padding:16px 20px;
+  margin:20px 0;font-size:14px}
+.nota.ojo{background:#FDF4F4;border-left-color:var(--rojo)}
+.nota.bien{background:#F2F9F5;border-left-color:var(--verde)}
+.nota b{display:block;margin-bottom:5px;font-weight:600}
+
+/* ══ pasos ══ */
+ol.pasos{list-style:none;counter-reset:p;margin:20px 0}
+ol.pasos li{counter-increment:p;position:relative;padding:0 0 16px 46px;font-size:15px}
+ol.pasos li::before{content:counter(p,decimal-leading-zero);position:absolute;left:0;top:1px;
+  font-size:15px;font-weight:700;color:var(--azul)}
+ol.pasos li b{display:block;margin-bottom:3px}
+
+/* ══ descargar ══ */
+.barra{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--linea);padding:12px 60px;
+  display:flex;justify-content:space-between;align-items:center;gap:18px}
+.barra .t{font-size:13px;font-weight:600;color:var(--gris)}
+.descargar{border:1px solid var(--azul);color:var(--azul);background:none;font:inherit;
+  font-size:13px;font-weight:600;padding:9px 18px;border-radius:100px;cursor:pointer;
+  transition:background .16s,color .16s;white-space:nowrap}
+.descargar:hover{background:var(--azul);color:#fff}
+
+footer{padding:32px 60px 44px;background:#FAFCFE;border-top:1px solid var(--linea);
+  font-size:12.5px;color:var(--gris)}
+footer b{color:var(--tinta)}
+
+@media(max-width:700px){
+  header,main,.barra,footer{padding-left:24px;padding-right:24px}
+  header h1{font-size:25px}
+  table{font-size:12.5px}
+  th,td{padding:8px 8px}
+}
+
+/* ══ impresion ══
+   El boton llama a window.print(). Aqui se limpia lo que no debe salir en
+   papel y se evita que una tabla se parta a la mitad entre dos hojas. */
+@media print{
+  body{background:#fff}
+  .hoja{box-shadow:none;max-width:none}
+  .barra{display:none}
+  header{padding:32px 0 26px}
+  header::before{display:none}
+  main{padding:0}
+  section{padding:22px 0;break-inside:avoid}
+  h2{break-after:avoid}
+  table,.cifras,.nota{break-inside:avoid}
+  footer{padding:22px 0;background:none}
+  a{color:inherit;text-decoration:none}
+  @page{margin:16mm 14mm}
+}
+</style>
+</head>
+<body>
+
+<div class="hoja">
+
+<div class="barra">
+  <span class="t">ACT Soluciones Médicas · MicroAire Colombia · September 2026</span>
+  <button class="descargar" onclick="window.print()">Download as PDF</button>
+</div>
+
+<header>
+  <div class="marca">Dossier · the workings behind the proposal</div>
+  <h1>How ACT runs the numbers, and what backs the operation</h1>
+  <p class="bajada">This document exists so that nothing in the presentation has to be taken
+    on trust. Every figure on every slide appears here with its source and its arithmetic.</p>
+  <div class="meta">
+    <span>ACT Soluciones Médicas SAS · Bogotá, Colombia</span>
+    <span>Prepared for Hyrum Nagata, Director Latin America</span>
+    <span>September 2026</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════ 1 ═══════════════ -->
+<section>
+  <h2><span class="n">One</span>What this document is, and why it exists</h2>
+  <p>MicroAire is not being asked to believe that Colombia is a good market. The procedure
+    counts are published by ISAPS and republished by the Colombian Society of Plastic Surgery,
+    and anyone can check them.</p>
+  <p>What MicroAire is being asked to decide is narrower and harder: whether ACT can be relied
+    on to buy on a schedule and pay on terms. That is a question about how a company is run,
+    not about how large a market is. It cannot be answered with adjectives.</p>
+  <p>So this dossier answers it the only way it can be answered, which is by opening the
+    workings. <strong>Where a number comes from a public source, the source is named. Where it
+    comes from ACT's own financial model, the calculation is shown.</strong></p>
+  <div class="nota">
+    <b>One thing worth saying plainly</b>
+    Colombia scores 37 out of 100 on the 2025 Corruption Perceptions Index, ranked 99th of 182
+    and below the regional average of 42. The risk in this market is not demand. It is
+    counterparty risk. A distributor that expects to be trusted here should expect to be
+    audited, and should make that easy rather than awkward.
+  </div>
+</section>
+
+<!-- ═══════════════ 2 ═══════════════ -->
+<section>
+  <h2><span class="n">Two</span>The market, and the single number that matters</h2>
+  <p class="sub">ISAPS 2024 Global Survey, published via the Sociedad Colombiana de Cirugía
+    Plástica Estética y Reconstructiva, June 2025.</p>
+
+  <div class="cifras">
+    <div class="cifra"><div class="v">490,944</div><div class="e">Procedures, 2024</div>
+      <div class="n">Up 10% from 447,268 in 2023</div></div>
+    <div class="cifra"><div class="v verde">41,280</div><div class="e">Liposuction</div>
+      <div class="n">The largest single surgical volume in the country</div></div>
+    <div class="cifra"><div class="v">28,032</div><div class="e">Eyelid surgery</div>
+      <div class="n">New to the top five, up 12%. This is Endotine's volume</div></div>
+    <div class="cifra"><div class="v">~1,000</div><div class="e">Plastic surgeons</div>
+      <div class="n">Practising in Colombia, per the same survey</div></div>
+  </div>
+
+  <p>The comparison that gives those numbers their weight is the global one. Worldwide,
+    procedures <strong>fell 4.8%</strong> in 2024, to 37.9 million. Colombia <strong>rose
+    10%</strong>. In a year when the industry contracted, this market added 43,676 procedures.</p>
+  <p>Colombia also draws patients from outside: <strong>roughly one in three</strong> is
+    international, double the world average, behind only Tunisia and the United Arab Emirates.
+    That matters for a capital equipment decision because it means demand is not capped by
+    domestic purchasing power.</p>
+
+  <table>
+    <caption>Surgical procedures, Colombia 2024. Source: ISAPS via SCCP, June 2025.</caption>
+    <thead><tr><th>Procedure</th><th class="num">2024 volume</th><th>Relevance to the MicroAire portfolio</th></tr></thead>
+    <tbody>
+      <tr><td class="destaca">Liposuction</td><td class="num destaca">41,280</td><td>The procedure PAL performs. Largest surgical volume nationally.</td></tr>
+      <tr><td>Breast augmentation</td><td class="num">33,984</td><td>Adjacent theatre time, same surgeon.</td></tr>
+      <tr><td class="destaca">Eyelid surgery</td><td class="num destaca">28,032</td><td>Endotine TransBleph. Entered the top five for the first time.</td></tr>
+      <tr><td>Gluteal augmentation</td><td class="num">27,360</td><td>Frequently combined with liposuction, so same device.</td></tr>
+      <tr><td>Abdominoplasty</td><td class="num">21,984</td><td>Frequently combined with liposuction.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════ 3 ═══════════════ -->
+<section>
+  <h2><span class="n">Three</span>Who actually imports, according to customs</h2>
+  <p class="sub">Veritrade customs records, January to June 2026. CIF value in USD.</p>
+
+  <p>Seen from outside, the Colombian market looks like eight or nine competing brands. The
+    customs record shows something simpler: <strong>three importing houses</strong> account for
+    the equipment that competes with PAL. Everything else is a brand sitting inside one of them.</p>
+
+  <table>
+    <caption>Source: Veritrade customs records, January–June 2026.</caption>
+    <thead><tr><th>Importer</th><th class="num">CIF, 6 months</th><th class="num">vs 2025</th><th>Brands carried</th><th>Competes with PAL through</th></tr></thead>
+    <tbody>
+      <tr><td>Visión Médica Colombia</td><td class="num">244,194</td><td class="num">n/a</td><td>Nouvag, Faga, EMED</td><td>Liposurg, The Artist, Vibrofit</td></tr>
+      <tr><td class="destaca">Suministros Médicos SM</td><td class="num destaca">235,166</td><td class="num">+41.4%</td><td>MicroAire, nothing else</td><td>PAL Synergy · the incumbent</td></tr>
+      <tr><td>Gilmédica</td><td class="num">149,235</td><td class="num">−1.0%</td><td>Apyx, Meta Cell, Allurion and more</td><td>AYON</td></tr>
+    </tbody>
+  </table>
+
+  <p>Two things follow from that table, and both are useful to MicroAire.</p>
+  <p><strong>The first is that MicroAire is already competitive on volume.</strong> Suministros
+    Médicos imports almost as much as Visión Médica, which carries five suppliers to their one.
+    On a per-brand basis MicroAire is outperforming the multibrand house.</p>
+  <p><strong>The second is that Gilmédica is not really a competitor in this category.</strong>
+    Apyx is a small share of a very large catalogue. Their 149,235 is spread across a dozen
+    brands, so the AYON volume behind it is modest.</p>
+
+  <div class="nota">
+    <b>Where PAL sits on price</b>
+    At COP 116.7 million installed, MicroAire PAL is the least expensive dedicated
+    power-assisted system in the market: below Vibrofit at 130.0 million, below Nouvag Liposurg
+    at 140.9 million, and far below APYX AYON at 440.0 million. The brand is not fighting a
+    price disadvantage in Colombia. It is fighting a coverage and service gap.
+  </div>
+</section>
+
+<!-- ═══════════════ 4 ═══════════════ -->
+<section>
+  <h2><span class="n">Four</span>What ACT has committed to, before selling anything</h2>
+
+  <div class="cifras">
+    <div class="cifra"><div class="v">24</div><div class="e">PAL systems per year</div>
+      <div class="n">Two per month, the contractual floor</div></div>
+    <div class="cifra"><div class="v">364,704</div><div class="e">USD per year</div>
+      <div class="n">24 systems at USD 15,196 each</div></div>
+    <div class="cifra"><div class="v">42,000</div><div class="e">USD, Endotine launch</div>
+      <div class="n">Year two, across four quarters</div></div>
+    <div class="cifra"><div class="v">10</div><div class="e">Service events per month</div>
+      <div class="n">On an installed base of about 350 units</div></div>
+  </div>
+
+  <p>The comparison that matters is against the incumbent's actual behaviour, not against a
+    forecast. Suministros Médicos imported <strong>USD 235,166</strong> in the six months to
+    June 2026. ACT's committed minimum for the same period is <strong>USD 182,352</strong>,
+    which is <strong>78% of the incumbent</strong> before Endotine, before the service line, and
+    before any growth at all.</p>
+
+  <table>
+    <caption>ACT figures are the contractual minimum. Incumbent figures are customs records.</caption>
+    <thead><tr><th></th><th class="num">Six months</th><th class="num">Twelve months</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>Suministros Médicos SM, actual</td><td class="num">235,166</td><td class="num">n/a</td><td>Veritrade, Jan–Jun 2026, 20 customs entries</td></tr>
+      <tr><td class="destaca">ACT, equipment floor</td><td class="num destaca">182,352</td><td class="num destaca">364,704</td><td>24 systems at 15,196</td></tr>
+      <tr><td class="destaca">ACT, plus Endotine from year 2</td><td class="num destaca">203,352</td><td class="num destaca">406,704</td><td>Adds the 42,000 launch order</td></tr>
+    </tbody>
+  </table>
+
+  <p class="gris">The floor is a floor. It is what ACT has undertaken to buy whether or not the
+    market cooperates, which is a different kind of statement from a sales projection.</p>
+</section>
+
+<!-- ═══════════════ 5 ═══════════════ -->
+<section>
+  <h2><span class="n">Five</span>What a system actually costs to land</h2>
+  <p class="sub">The full chain, from the MicroAire invoice to the price a surgeon pays.</p>
+
+  <table>
+    <caption>Cost breakdown confirmed by ACT. TRM 3,361.62 COP per USD, Banco de la República, July 2026.</caption>
+    <thead><tr><th>Component</th><th class="num">USD</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Console</td><td class="num">6,109</td><td>Matches the list price on the MicroAire PAL Synergy kit sheet</td></tr>
+      <tr><td>PAL 750 handpiece</td><td class="num">7,607</td><td>The most expensive single component, above the console</td></tr>
+      <tr><td>Three cannulas</td><td class="num">180</td><td></td></tr>
+      <tr><td>Cable</td><td class="num">1,200</td><td></td></tr>
+      <tr><td>Tubing</td><td class="num">100</td><td></td></tr>
+      <tr><td class="destaca">Cost per system</td><td class="num destaca">15,196</td><td>No distributor discount applies to this figure</td></tr>
+    </tbody>
+  </table>
+
+  <p>On top of that sits <strong>10% for freight, duty and nationalisation</strong>, and 19% VAT
+    which is recoverable and therefore does not sit in the cost. That gives a landed cost of
+    <strong>COP 56.2 million</strong> per system against a market price of COP 116.7 million.</p>
+
+  <div class="nota bien">
+    <b>Why the service line matters more than its size suggests</b>
+    A service event costs USD 3,000, of which Novatecnica takes the whole amount for parts and
+    labour, and the surgeon pays USD 5,000. At 10 events a month across an installed base of
+    350 units, each machine comes in roughly <strong>once every 2.9 years</strong>. Annualised,
+    that is <strong>4.9% of the equipment value per year</strong>, which is exactly the level
+    the market considers reasonable and well under what the current arrangement costs a surgeon.
+    Nobody in the customs record offers this today.
+  </div>
+</section>
+
+<!-- ═══════════════ 6 ═══════════════ -->
+<section>
+  <h2><span class="n">Six</span>How the operation funds itself</h2>
+  <p class="sub">This is the section that answers the only question MicroAire really has.</p>
+
+  <div class="cifras">
+    <div class="cifra"><div class="v verde">0</div><div class="e">Outside capital</div>
+      <div class="n">Across all 36 months of the plan</div></div>
+    <div class="cifra"><div class="v verde">0</div><div class="e">Cash cycle, days</div>
+      <div class="n">ACT collects and pays on the same day</div></div>
+    <div class="cifra"><div class="v">3.9%</div><div class="e">PKT</div>
+      <div class="n">Working capital tied per peso of sales</div></div>
+    <div class="cifra"><div class="v">9.75</div><div class="e">PDC</div>
+      <div class="n">EBITDA margin divided by PKT</div></div>
+  </div>
+
+  <p>Three things happen in a fixed order, and the order is what makes the model work.
+    <strong>MicroAire invoices on 90 days.</strong> <strong>The surgeon pays half on
+    signature</strong> and the balance over four months. <strong>The service line collects in
+    the same month</strong> it is delivered, with no import and no financing behind it. Money
+    arrives before it has to leave.</p>
+
+  <table>
+    <caption>Working capital under the Óscar León García framework. Source: ACT internal model, year one.</caption>
+    <thead><tr><th>Measure</th><th class="num">Value</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>Days of receivables</td><td class="num">30</td><td>Half of each sale, collected over four months</td></tr>
+      <tr><td>Days of inventory</td><td class="num">60</td><td>Time a system sits in the warehouse before it sells</td></tr>
+      <tr><td>Days of supplier credit</td><td class="num">90</td><td>The MicroAire term</td></tr>
+      <tr><td class="destaca">Cash conversion cycle</td><td class="num destaca">0</td><td>30 plus 60 minus 90. ACT pays and collects on the same day</td></tr>
+      <tr><td>KTNO</td><td class="num">186 M COP</td><td>Net operating working capital</td></tr>
+      <tr><td>PKT</td><td class="num">3.9%</td><td>Growing sales by 1 billion ties up 39 million</td></tr>
+      <tr><td class="destaca">PDC</td><td class="num destaca">9.75</td><td>Above 1 means growth generates cash. This is comfortably above</td></tr>
+    </tbody>
+  </table>
+
+  <p>The practical consequence is that <strong>ACT does not need a bank in order to pay
+    MicroAire</strong>, and does not need a shareholder injection in order to grow. That is a
+    materially different risk profile from a distributor that funds its purchases on credit.</p>
+
+  <div class="nota ojo">
+    <b>And this is what it rests on</b>
+    All of the above is a consequence of the 90-day term. ACT has modelled the alternatives
+    rather than assume them away:
+    <table style="margin-top:12px;margin-bottom:0">
+      <thead><tr><th>MicroAire term</th><th class="num">Working capital ACT must find</th><th>Consequence</th></tr></thead>
+      <tbody>
+        <tr><td>90 days, as agreed</td><td class="num" style="color:var(--verde);font-weight:600">none, 104 M to spare</td><td>Self funding. The plan as presented</td></tr>
+        <tr><td>60 days</td><td class="num" style="color:var(--oro);font-weight:600">8.6 M</td><td>Still self funding, with no margin for error</td></tr>
+        <tr><td>Cash on delivery</td><td class="num" style="color:var(--rojo);font-weight:600">233 M</td><td>ACT would fund the machine and the surgeon at once</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ 7 ═══════════════ -->
+<section>
+  <h2><span class="n">Seven</span>What the surgeon is offered, and who pays for it</h2>
+  <p>ACT finances the surgeon: <strong>50% on signature and 50% over four months</strong>. The
+    rate is <strong>19.27% a year</strong>, and it is not a number that was chosen for how it
+    sounds. It is calculated to sit inside a band with two hard edges.</p>
+
+  <table>
+    <caption>Rates as at August 2026. Sources: Banco de la República; Superintendencia Financiera de Colombia.</caption>
+    <thead><tr><th>Reference</th><th class="num">Rate</th><th>Why it bounds the decision</th></tr></thead>
+    <tbody>
+      <tr><td>Banco de la República intervention rate</td><td class="num">12.00%</td><td>The price of money to banks, not to a surgeon</td></tr>
+      <tr><td>ACT's own cost of money</td><td class="num">18.00%</td><td>Below this, ACT would be financing at a loss</td></tr>
+      <tr><td class="destaca">What ACT charges</td><td class="num destaca">19.27%</td><td>Inside the band, and defensible in a room</td></tr>
+      <tr><td>Interés bancario corriente</td><td class="num">19.77%</td><td>The certified bank average. Above this, ACT is not cheaper than a bank</td></tr>
+      <tr><td>Usury ceiling</td><td class="num">29.66%</td><td>A legal limit, not a commercial one</td></tr>
+    </tbody>
+  </table>
+
+  <p>The usable band is <strong>less than two percentage points wide</strong>. ACT charges
+    inside it, which means the surgeon genuinely pays less than a bank would charge and ACT
+    genuinely covers its cost of capital. <strong>None of this is funded by MicroAire.</strong></p>
+</section>
+
+<!-- ═══════════════ 8 ═══════════════ -->
+<section>
+  <h2><span class="n">Eight</span>The five requests, and what each one unlocks</h2>
+  <ol class="pasos">
+    <li><b>Payment terms: 90 days written into the agreement</b>
+      With 120 days as a milestone tied to demonstrated payment performance. This is the only
+      request that changes the financial model, and everything in section six depends on it.</li>
+    <li><b>Training and education</b>
+      Cadaver workshops in Bogotá, access to international key opinion leaders, and the webinar
+      programme. For Endotine alone the plan calls for four hands-on events and six webinars a
+      year. This is what converts a registration into sales.</li>
+    <li><b>Marketing and clinical evidence</b>
+      Case studies, clinical papers and presence at Colombian congresses. Local publications
+      with Colombian surgeons carry more weight in this market than international ones.</li>
+    <li><b>Regulatory support</b>
+      Documentation for the INVIMA submission, and title transfer once granted so the
+      registration sits with ACT long term. ACT funds the process and MicroAire reimburses it,
+      so the cost is neutral. The eight-month timeline is not.</li>
+    <li><b>Technical and service</b>
+      Warranty process, complaint handling and service protocol. Without these the service
+      line described in section five is a promise rather than a product.</li>
+  </ol>
+</section>
+
+<!-- ═══════════════ 9 ═══════════════ -->
+<section>
+  <h2><span class="n">Nine</span>What is not yet settled</h2>
+  <p class="sub">Included because a dossier that only contains good news is not evidence of
+    anything.</p>
+  <table>
+    <thead><tr><th>Open item</th><th>Effect if it moves</th></tr></thead>
+    <tbody>
+      <tr><td>Endotine product mix, month by month</td><td>The USD 42,000 commitment is fixed; how it is composed is not. ACT has spread it evenly across twelve months pending real demand data.</td></tr>
+      <tr><td>Split of the USD 3,000 service cost between parts and labour</td><td>Does not change the margin, but without it neither side can negotiate the components down.</td></tr>
+      <tr><td>Cost of cadaver training and surgeon honoraria</td><td>Sits in fixed costs. With Endotine added, the current education budget is likely conservative.</td></tr>
+      <tr><td>Whether annual maintenance is mandated by regulation</td><td>If it is, the service line stops being a sale and becomes an obligation, which changes how it is forecast.</td></tr>
+      <tr><td>Share of surgeons who take the financing</td><td>Modelled at 100%, the worst case for cash. Any lower and the working capital position improves.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════ 10 ═══════════════ -->
+<section>
+  <h2><span class="n">Ten</span>Next steps</h2>
+  <ol class="pasos">
+    <li><b>Confirm the payment terms.</b> 90 days, in writing. Immediate.</li>
+    <li><b>Sign the distribution agreement.</b> Scope, territory and the Endotine commitment. Q4 2026.</li>
+    <li><b>Open the INVIMA submission for Endotine.</b> Eight months, so it starts before the contract closes rather than after. Q4 2026.</li>
+    <li><b>First order, training and launch.</b> PAL and the service line from month one. Q1 2027.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  <p><b>Sources.</b> ISAPS 2024 Global Survey, published via the Sociedad Colombiana de Cirugía
+    Plástica Estética y Reconstructiva, June 2025 · Veritrade customs records, January to June
+    2026 · International Monetary Fund, World Economic Outlook 2025 · Transparency International,
+    Corruption Perceptions Index 2025 · Banco de la República, intervention rate and TRM, July 2026 ·
+    Superintendencia Financiera de Colombia, interés bancario corriente and usury ceiling, August 2026 ·
+    MicroAire 2025 International Distributor Endotine price list and PAL Synergy sales kit sheet ·
+    ACT internal financial model, 36 months, three revenue lines.</p>
+  <p style="margin-top:14px"><b>ACT Soluciones Médicas SAS</b> · Alejandra Correa, CEO ·
+    +57 321 421 2435 · alejandra.correa.sm@outlook.com · Bogotá, Colombia</p>
+</footer>
+
+</div>
+
+<script>
+// El boton de arriba solo abre el dialogo de impresion del navegador, que
+// en cualquier sistema ofrece "Guardar como PDF". Sin librerias y sin
+// mandar el documento a ningun servidor, que para un dossier con cifras
+// internas es justamente lo que se quiere.
+document.addEventListener('keydown', function(e){
+  if ((e.metaKey || e.ctrlKey) && e.key === 'p') { /* el atajo normal ya funciona */ }
+});
+</script>
+</body>
+</html>
